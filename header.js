@@ -1750,9 +1750,7 @@ function montarPalavraNaTela() {
 	autor.innerHTML = palavraSecretaAutor;
 
 	const livro = document.getElementById("palavras");
-	palavras.innerHTML = "";
-
-	console.log(palavras)
+	livro.innerHTML = "";
 
 	for (i = 0; i < palavraSecretaLivro.length; i++) {
 		if (listaDinamica[i] == undefined) {
@@ -1783,7 +1781,6 @@ function montarPalavraNaTela() {
 function verificaLetraEscolhida(letra) {
 	document.getElementById(`tecla-${letra}`).disable = true;
 	if (tentativas > 0) {
-
 		mudarStyleLetra(`tecla-${letra}`, false);
 		comparaListas(letra);
 		montarPalavraNaTela();
@@ -1803,24 +1800,40 @@ function mudarStyleLetra(tecla, condicao) {
 }
 
 function comparaListas(letra) {
-	const pos = palavraSecretaLivro.indexOf(letra)
-	console.log(pos)
+
+	/*
+		Nessa parte da constante "pos", 'palavraSecretaLivro.toLowerCase()', estamos passando a 
+		palavra do arrayObject para minúscula e também estamos fazendo o mesmo com o valor do button recebido,
+		'letra.toLowerCase()', quando procuramos com o 'indexOf()'
+	*/
+
+	const pos = palavraSecretaLivro.toLowerCase().indexOf(letra.toLowerCase()) 
 
 	if (pos < 0) {
 		tentativas--
 		carregaImagemForca();
 	} else {
 		mudarStyleLetra(`tecla-${letra}`, true);
-		for (i = 0; i < palavraSecretaLivro.length; i++) {
-			if (palavraSecretaLivro[i] == letra) {
+		for (let i = 0; i < palavraSecretaLivro.length; i++) {
+
+			let palavraAtual = palavraSecretaLivro[i].toLowerCase() //deixa a letra, indice atual, em minúsculo
+			let botaoClicado = letra.toLowerCase() //deixa o valor do button em minúsculo
+			let letraCorreta = palavraAtual == botaoClicado // compara se há semelhança entre os valores 
+			console.log(letraCorreta)
+
+			if (letraCorreta) {
 				listaDinamica[i] = letra;
+				/*
+					aqui colocamos a letra no local, mas temos a problematica 
+					de colocar todas as letras em Maiúscula 
+				*/
 			}
 		}
 	}
 
 	let vitoria = true;
 	for (i = 0; i < palavraSecretaLivro.length; i++) {
-		if (palavraSecretaLivro[i] != listaDinamica[i]) {
+		if (palavraSecretaLivro[i].toLowerCase() != listaDinamica[i].toLowerCase()) {
 			vitoria = false;
 		}
 	}
