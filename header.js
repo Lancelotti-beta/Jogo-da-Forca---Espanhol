@@ -3,9 +3,11 @@ let listaDinamica = [];
 let palavraSecretaAutor;
 let palavraSecretaLivro;
 
+const canvas = document.getElementById('stick')
+const ctx = canvas.getContext('2d')
 
-/*const canvas = document.getElementById('stick')
-const ctx = canvas.getContext('2d')*/
+const mejores = document.querySelector('h2')
+const botoesAlfabeto = document.querySelectorAll('#botoes button')
 
 const alfabeto = "aábcdeéfghiíjklmnñoópqrstuúvwxyz "
 
@@ -18,7 +20,7 @@ function typeWriter(elemento) {
 		}, 75 * i)
 	})
 }
-const mejores = document.querySelector('h2')
+
 typeWriter(mejores)
 
 const palavraSecreta = [
@@ -1728,11 +1730,47 @@ const palavraSecreta = [
 
 ];
 
-
+/*
+	botão iniciar, carrega funções para sortear uma palavra aleatória,
+	adicionar a 'palavra secreta' na tela para ser descoberta e a dica
+	do nome do autor.
+	Também desbloqueia o botão de reiniciar o jogo
+*/
 document.querySelector('#iniciar').addEventListener('click', (e) => {
-	criarPalavraSecreta()
-	montarPalavraNaTela()
+	criarPalavraSecreta();
+	montarPalavraNaTela();
+	document.querySelector('#reiniciar').style.display = "block"
+
+	/* Esta ação a baixo oculta o botão de iniciar ao mostrar o botão de reiniciar */
+	//e.target.style.display = "none"
 })
+
+// botão reiniciar - inicia a função de reiniciar o jogo.
+document.querySelector('#reiniciar').addEventListener('click', reiniciaElementos)
+
+
+function reiniciaElementos(){
+	/*
+		Esta função reinicia os valores atribuidos ao longo o jogo
+	*/
+
+	tentativas = 7;
+	listaDinamica = [];
+	palavraSecretaAutor = '';
+	palavraSecretaLivro = '';
+
+	ctx.fillStyle = "#E9D8C0";
+	ctx.fillRect(0, 0, 400, 600);
+
+	botoesAlfabeto.forEach(tecla => {
+		tecla.style.color = "#000000";
+		tecla.style.background = "#FDE0C9";
+		tecla.style.borderColor = "#AB9D85";
+	});
+
+	criarPalavraSecreta();
+	montarPalavraNaTela();
+}
 
 
 function criarPalavraSecreta() {
@@ -1845,10 +1883,6 @@ function comparaListas(letra) {
 
 }
 
-
-
-const canvas = document.getElementById('stick')
-const ctx = canvas.getContext('2d')
 
 function forca() {
 	ctx.beginPath()
